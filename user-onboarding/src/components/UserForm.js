@@ -21,26 +21,28 @@ function UserForm({ values, errors, touched, isSubmitting, status }) {
 
     <div className = "user-form">
 
+      <h1>User Onboarding Form</h1>
+
         <Form>
-          <div>        
-            <Field type="text" name="username" placeholder="Name" />
+          <div className = "form-input-div">        
+            <Field className = "form-input" type="text" name="username" placeholder="Name" />
 
             {/*if you touch the username field and there are any errors (if both conditions are true) we will display or
               render the error in the <p> tags */}
             {touched.username && errors.username && <p>{errors.username}</p>}
           </div>
 
-          <div>        
-            <Field type="email" name="email" placeholder="Email" />
+          <div className = "form-input-div">        
+            <Field className = "form-input" type="email" name="email" placeholder="Email" />
             {touched.email && errors.email && <p>{errors.email}</p>}
           </div>
 
-          <div>       
-            <Field type="password" name="password" placeholder="Password" />
+          <div className = "form-input-div">       
+            <Field className = "form-input" type="password" name="password" placeholder="Password" />
             {touched.password && errors.password && <p>{errors.password}</p>}
           </div>
 
-          <div>
+          <div >
             <label>
               <Field type="checkbox" name="tos" checked={values.tos} />
               Accept Terms of Service
@@ -51,13 +53,24 @@ function UserForm({ values, errors, touched, isSubmitting, status }) {
 
         </Form>
 
-        {users.map(user => (
-        <ul key={user.id}>
-          <li>Name: {user.username}</li>
-          <li>Email: {user.email}</li>
-          <li>Password: {user.password}</li>
-        </ul>
-      ))}
+        {/*RENDER USERS TO SCREEN */}
+
+        <div className= "user-list">
+
+            {users.map(user => (
+            <div key={user.id}>
+
+              <h2>Name: {user.username}</h2>
+              <p>Email: {user.email}</p>
+              <p>Password: {user.password}</p>
+              
+            </div>
+        
+
+            ))}
+
+        </div>
+
     </div>
 
    
@@ -89,13 +102,16 @@ const FormikUserForm = withFormik({
       .required("Email is required"),
     password: Yup.string()
       .min(5, "Password must be 16 characters or longer")
-      .required("Password is required"),   
+      .required("Password is required"),    
+    tos: Yup.boolean()
+      .oneOf([true], "Must Accept Terms and Conditions")
+      .required("Must Accept Terms and Conditions")   
 
   }),
 
   //formik handles all side effects so we dont need to use useEffect
   handleSubmit(values, { resetForm, setErrors, setStatus, setSubmitting }) {
-    if (values.email === "alreadytaken@atb.dev") {
+   if (values.email === "waffle@syrup.com") {
       setErrors({ email: "That email is already taken" });
     } else {
       axios
@@ -112,8 +128,11 @@ const FormikUserForm = withFormik({
           console.log(err.response); // There was an error creating the data and logs to console
           setSubmitting(false);
         });
-    }
+
+      }//end else
+    
   }
+
 })(UserForm); //end FormikUserForm
 
 export default FormikUserForm;
