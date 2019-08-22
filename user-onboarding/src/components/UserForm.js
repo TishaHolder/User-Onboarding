@@ -55,10 +55,11 @@ function UserForm({ values, errors, touched, isSubmitting, status }) {
 
         {/*RENDER USERS TO SCREEN */}
 
-        <div className= "user-list">
+        <div className= "users-list">
 
             {users.map(user => (
-            <div key={user.id}>
+
+            <div className = "user-card" key={user.id}>
 
               <h2>Name: {user.username}</h2>
               <p>Email: {user.email}</p>
@@ -111,6 +112,7 @@ const FormikUserForm = withFormik({
 
   //formik handles all side effects so we dont need to use useEffect
   handleSubmit(values, { resetForm, setErrors, setStatus, setSubmitting }) {
+    //****************************** */STRETCH**********************
    if (values.email === "waffle@syrup.com") {
       setErrors({ email: "That email is already taken" });
     } else {
