@@ -45,6 +45,7 @@ function UserForm({ values, errors, touched, isSubmitting, status }) {
           <div >
             <label>
               <Field type="checkbox" name="tos" checked={values.tos} />
+              {touched.tos && errors.tos && <p>{errors.tos}</p>}
               Accept Terms of Service
             </label>
           </div>
